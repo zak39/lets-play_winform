@@ -1,0 +1,3 @@
+"zak";"girafe";"girafe";9
+"candide";"singe";"singe";5
+"Maxou";"taureau";"taureau";11
