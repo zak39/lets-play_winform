@@ -85,6 +85,7 @@
             this.textBox4.Size = new System.Drawing.Size(100, 20);
             this.textBox4.TabIndex = 8;
             this.textBox4.Visible = false;
+            this.textBox4.TextChanged += new System.EventHandler(this.textBox4_TextChanged);
             // 
             // textBox5
             // 
@@ -94,6 +95,7 @@
             this.textBox5.Size = new System.Drawing.Size(43, 20);
             this.textBox5.TabIndex = 9;
             this.textBox5.Visible = false;
+            this.textBox5.TextChanged += new System.EventHandler(this.textBox5_TextChanged);
             // 
             // label3
             // 
