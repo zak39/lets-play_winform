@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace lets_play_winform
 {
-    /*
     interface Int_Jeu
     {
         void joue(char caractere);
@@ -135,5 +134,41 @@ namespace lets_play_winform
             }
 
         }
-            */
+
+    }
+
+    public class Revision : Orthogenie
+    {
+
+        // constructeur
+        public string solution, mot;
+        public Revision() { }
+        public Revision(string solution, string mot, bool victoire)
+        : base(solution, mot, victoire)
+        {
+        }
+
+        public int points, note;
+        public Revision(int points, int note)
+        : base(points)
+        {
+        }
+
+        public string prenom;
+        public Revision(string prenom) { this.prenom = "unknown"; }
+
+        public string Prenom
+        {
+            get => this.prenom;
+            set => this.prenom = value;
+        }
+
+
+        public int Note
+        {
+            get => this.note;
+            set => this.note = value;
+        }
+    }
+
 }
