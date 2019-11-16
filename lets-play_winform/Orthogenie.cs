@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace lets_play_winform
 {
+
+    public enum Mode { pendu, bescherelle };
+
     interface Int_Jeu
     {
         void joue(char caractere);

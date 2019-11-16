@@ -13,7 +13,6 @@ using MySql.Data.MySqlClient;
 
 namespace lets_play_winform
 {
-    public enum Mode { pendu, bescherelle };
     public partial class Form2 : Form
     {
         public static string motATrouve;
