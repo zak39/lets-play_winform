@@ -109,12 +109,6 @@ namespace lets_play_winform
             textBox2.AppendText(orthoDb.AfficherDatabase());
         }
 
-        private void button3_Click(object sender, EventArgs e)
-        {
-            Form3 window = new Form3();
-            window.Show();
-        }
-
         private void button4_Click(object sender, EventArgs e)
         {
             this.Hide();
