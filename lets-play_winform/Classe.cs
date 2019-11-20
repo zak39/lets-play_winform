@@ -188,7 +188,7 @@ namespace lets_play_winform
 
         /*public void Charge(string pathRelative="./file.txt")*/ // For Linux
         // public void Charge(string pathRelative="E:\\docs\\code\\csharp\\01_pendu-bescherelle\\lets-play\\file.txt")
-        public void Charge(string pathRelative = "C:\\Users\\hela\\Documents\\code\\csharp\\lets-play_winform\\lets-play_winform\\lets-play_winform\\file.txt") // For Linux
+        public void Charge(string pathRelative = "C:\\Users\\hela\\Documents\\code\\csharp\\lets-play_winform-with-git\\lets-play_winform\\lets-play_winform\\file.txt") // For Linux
         {
             /* string readText = File.ReadAllText(pathRelative);
              List<string> listReadText = readText.Split(',').ToList();
