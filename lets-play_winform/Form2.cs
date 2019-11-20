@@ -20,8 +20,10 @@ namespace lets_play_winform
         public static Revision mode_revision;
         public static bool state_checkBox1;
         public static Classe classer = new Classe();
+        public Database orthoDb = new Database("127.0.0.1", "root", "", "orthogenie");
+
         // Mysql
-        public static MySqlConnection connection;
+        // public static MySqlConnection connection;
 
         public Form2()
         {
@@ -70,39 +72,13 @@ namespace lets_play_winform
 
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
-
+            
         }
 
         private void Form2_Load(object sender, EventArgs e)
         {
-            // Mysql
-            // string connectionString = "SERVER=127.0.0.1;DATABASE=orthogenie;UID=root;PASSWORD=";
-            // MySqlConnection connection = new MySqlConnection(connectionString);
-            //connection.Open();
-            //--
-            if (classer.classement == null)
-            {
-                classer.classement = new List<Revision>();
-                classer.Charge();
-                classer.get_classement();
-                textBox2.AppendText("Prenom\t\t\tScore" + "\r\n");
-                foreach (Revision current_classement in classer.classement)
-                {
-                    textBox2.AppendText(current_classement.prenom + "\t\t\t" + Convert.ToString(current_classement.note) + "\r\n");
-                }
-            }
-            else
-            {
-                textBox2.AppendText("Prenom\t\t\tScore" + "\r\n");
-                classer.get_classement();
-                
-                foreach (Revision current_classement in classer.classement)
-                {
-                    textBox2.AppendText(current_classement.prenom + "\t\t\t" + Convert.ToString(current_classement.note) + "\r\n");
-                }
-            }
-            
-            
+            textBox2.AppendText("Prenom\t\t\tScore" + "\r\n");
+            textBox2.AppendText(orthoDb.AfficherDatabase());          
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
@@ -113,7 +89,7 @@ namespace lets_play_winform
 
         private void Form2_Click(object sender, EventArgs e)
         {
-
+            
         }
 
         private void button1_Click(object sender, EventArgs e)
