@@ -53,6 +53,31 @@ namespace lets_play_winform
         }
 
         // Methodes
+
+        public string AfficherDatabase()
+        {
+            string result = "";
+            string connectionString = "SERVER=" + this.addrIPDB + ";DATABASE=" + this.name + ";UID=" + this.usernameDB + ";PASSWORD=" + this.passwordDB + "";
+            MySqlConnection connection = new MySqlConnection(connectionString);
+
+            connection.Open();
+            MySqlCommand cmd = connection.CreateCommand();
+
+            cmd.CommandText = "SELECT * FROM scores ORDER BY note DESC";
+
+            DbDataReader reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                result = result + reader.GetString(0) + "\t\t\t" + reader.GetInt32(1) + "\r\n";
+            }
+
+            connection.Close();
+            reader.Close();
+
+            return result;
+
+        }
         public void SaveDatabase(string prenom, int note)
         {
             //List<String> list_prenoms = new List<String>();
@@ -63,8 +88,6 @@ namespace lets_play_winform
             string connectionString = "SERVER="+ this.addrIPDB +";DATABASE="+ this.name +";UID="+ this.usernameDB +";PASSWORD="+ this.passwordDB +"";
             MySqlConnection connection = new MySqlConnection(connectionString);
 
-            // Au depart je faisais reference au listing des fichiers deja present et non a la database
-            // Il faut coder pour que ca analyse la database
             connection.Open();
             MySqlCommand cmd = connection.CreateCommand();
 
