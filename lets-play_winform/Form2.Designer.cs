@@ -37,7 +37,6 @@
             this.button2 = new System.Windows.Forms.Button();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -91,7 +90,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(700, 639);
+            this.button1.Location = new System.Drawing.Point(700, 650);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(101, 44);
             this.button1.TabIndex = 7;
@@ -129,19 +128,9 @@
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(700, 761);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(101, 44);
-            this.button3.TabIndex = 9;
-            this.button3.Text = "Afficher Database";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(700, 812);
+            this.button4.Location = new System.Drawing.Point(700, 746);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(101, 41);
             this.button4.TabIndex = 10;
@@ -155,7 +144,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(911, 894);
             this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.checkBox1);
@@ -187,7 +175,6 @@
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
     }
 }
