@@ -103,7 +103,6 @@ namespace lets_play_winform
 
             reader.Close();
 
-
             if (prenomInDB == "")
             {
                 // Creer l'utilisateur
@@ -143,6 +142,61 @@ namespace lets_play_winform
 
             connection.Close();
 
+        }
+
+        public void ChargeDatabase(string pathRelative = "C:\\Users\\hela\\Documents\\code\\csharp\\lets-play_winform-with-git\\lets-play_winform\\lets-play_winform\\file.txt")
+        {
+
+            string connectionString = "SERVER=" + this.addrIPDB + ";DATABASE=" + this.name + ";UID=" + this.usernameDB + ";PASSWORD=" + this.passwordDB + "";
+            MySqlConnection connection = new MySqlConnection(connectionString);
+
+            connection.Open();
+            MySqlCommand cmd = connection.CreateCommand();
+
+            using (var reader = new StreamReader(@pathRelative)) // https://stackoverflow.com/questions/5282999/reading-csv-file-and-storing-values-into-an-array
+            {
+                List<string> listPernom = new List<string>();
+                List<string> listSolution = new List<string>();
+                List<string> listMot = new List<string>();
+                List<int> listScore = new List<int>();
+
+                while (!reader.EndOfStream)
+                {
+                    var line = reader.ReadLine();
+                    var values = line.Split(';');
+
+                    listPernom.Add(values[0]);
+                    listSolution.Add(values[1]);
+                    listMot.Add(values[2]);
+                    listScore.Add(int.Parse(values[3]));
+                }
+
+                int lenPrenom = listPernom.Count;
+                int lenSolution = listSolution.Count;
+                int lenMot = listMot.Count;
+                int lenScore = listScore.Count;
+
+                if (lenSolution == lenMot)
+                {
+                    for (int i = 0; i <= lenMot - 1; i++)
+                    {
+                        SaveDatabase(listPernom[i], listScore[i]);
+                    }
+                }
+                connection.Close();
+            }
+        }
+
+        public void DeleteAllDatabase()
+        {
+            string connectionString = "SERVER=" + this.addrIPDB + ";DATABASE=" + this.name + ";UID=" + this.usernameDB + ";PASSWORD=" + this.passwordDB + "";
+            MySqlConnection connection = new MySqlConnection(connectionString);
+
+            connection.Open();
+            MySqlCommand cmd = connection.CreateCommand();
+            cmd.CommandText = "DELETE FROM scores";
+            cmd.ExecuteNonQuery(); // Execute the request
+            connection.Close();
         }
     }
 }
