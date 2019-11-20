@@ -198,5 +198,22 @@ namespace lets_play_winform
             cmd.ExecuteNonQuery(); // Execute the request
             connection.Close();
         }
+
+        public void UpdateOneElementDatabase(string prenom, int score)
+        {
+            string connectionString = "SERVER="+ this.addrIPDB +";DATABASE="+ this.name +";UID="+ this.usernameDB +";PASSWORD="+ this.passwordDB +"";
+            MySqlConnection connection = new MySqlConnection(connectionString);
+
+            connection.Open();
+            MySqlCommand cmd = connection.CreateCommand();
+
+            cmd.CommandText = "UPDATE scores SET prenom=@prenom,note=@note WHERE prenom=@prenom";
+            cmd.Parameters.AddWithValue("@prenom", prenom);
+            cmd.Parameters.AddWithValue("@note", score);
+
+            cmd.ExecuteNonQuery();
+
+            connection.Close();
+        }
     }
 }
