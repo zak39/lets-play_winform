@@ -94,12 +94,19 @@ namespace lets_play_winform
 
         private void button1_Click(object sender, EventArgs e)
         {
-            classer.SaveDatabase();
+            orthoDb.ChargeDatabase();
+            textBox2.Clear();
+            textBox2.AppendText("Prenom\t\t\tScore" + "\r\n");
+            textBox2.AppendText(orthoDb.AfficherDatabase());
+            
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            classer.DeleteDatabase();
+            orthoDb.DeleteAllDatabase();
+            textBox2.Clear();
+            textBox2.AppendText("Prenom\t\t\tScore" + "\r\n");
+            textBox2.AppendText(orthoDb.AfficherDatabase());
         }
 
         private void button3_Click(object sender, EventArgs e)
