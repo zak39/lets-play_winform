@@ -117,6 +117,7 @@ namespace lets_play_winform
 
         private void button4_Click(object sender, EventArgs e)
         {
+            this.Hide();
             Form4 window = new Form4();
             window.Show();
         }
