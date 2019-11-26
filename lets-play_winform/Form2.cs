@@ -21,6 +21,7 @@ namespace lets_play_winform
         public static bool state_checkBox1;
         public static Classe classer = new Classe();
         public Database orthoDb = new Database("127.0.0.1", "root", "", "orthogenie");
+        public DatabaseDataSet orthoDbDs = new DatabaseDataSet();
 
         // Mysql
         // public static MySqlConnection connection;
@@ -78,7 +79,8 @@ namespace lets_play_winform
         private void Form2_Load(object sender, EventArgs e)
         {
             textBox2.AppendText("Prenom\t\t\tScore" + "\r\n");
-            textBox2.AppendText(orthoDb.AfficherDatabase());          
+            //textBox2.AppendText(orthoDb.AfficherDatabase());              // whithout Data Set
+            textBox2.AppendText(orthoDbDs.AfficherDatabaseDataSet());       // With Data Set
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)

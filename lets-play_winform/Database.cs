@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 using System.IO;   // pour importer un fichier
 using MySql.Data.MySqlClient;
 using System.Data.Common;
+using System.Data;  // Necessaire pour obtenir les DataSet
+using System.Data.SqlClient;
+using MySql.Data;
 
 namespace lets_play_winform
 {
@@ -215,5 +218,80 @@ namespace lets_play_winform
 
             connection.Close();
         }
+    }
+
+    public class DatabaseDataSet
+    {
+        public DatabaseDataSet()
+        {
+        }
+
+        // attributs
+        string addrIPDBDS, usernameDBDS, passwordDBDS, name;
+
+        // constructeur
+        public DatabaseDataSet(string IP="127.0.0.1", string username="", string password="", string nameDatabaseDataSet="")
+        {
+            this.addrIPDBDS = IP;
+            this.usernameDBDS = username;
+            this.passwordDBDS = password;
+            this.name = nameDatabaseDataSet;
+        }
+
+        // getters & setters
+        public string AddrIPDBDS
+        {
+            get => this.addrIPDBDS;
+            set => this.addrIPDBDS = value;
+        }
+
+        public string UsernameDBDS
+        {
+            get => this.usernameDBDS;
+            set => this.usernameDBDS = value;
+        }
+
+        public string PasswordDBBDS
+        {
+            get => this.passwordDBDS;
+            set => this.passwordDBDS = value;
+        }
+
+        public string Name
+        {
+            get => this.name;
+            set => this.name = value;
+        }
+
+        // Methodes
+        public string AfficherDatabaseDataSet()
+        {
+
+            string result = "";
+            string connectionString = "SERVER=127.0.0.1;DATABASE=orthogenie;UID=root;PASSWORD=";
+            MySqlConnection connection = new MySqlConnection(connectionString);
+
+            string requestSelect = "SELECT * FROM scores ORDER BY note DESC";                       // Preparation de la requete
+            MySqlDataAdapter daScores = new MySqlDataAdapter(requestSelect, connectionString);      // Creation de l'objet Data Adapter (DA) est l'interface entre la base de donnees et le data set. Le DA
+                                                                                                    // est responsable de la gestion des connexions a la database (?)
+          
+            MySqlCommandBuilder commandBuilder = new MySqlCommandBuilder(daScores);                 // Creation de l'objet Command Builder qui permet d'executer des commandes sql (?)
+
+            DataSet dsScores = new DataSet();                                                       // Creation de l'objet data set qui definit dans une zone memoire dans laquelle les donnees
+                                                                                                    // peuvent etre lues ou modifier. Il est possible de stocker plusieurs tables (?)
+
+            daScores.Fill(dsScores, "Scores");                                                      // La methode Fill permet de ...
+
+            DataTable myDataTable = dsScores.Tables["scores"];                                      // Creation de l'objet DataTable qui permet de selectionner une table de la database
+
+            // Ajoute le contenu de la table dans la variable result
+            foreach (DataRow myDataRow in myDataTable.Rows)
+            {
+                result += myDataRow[("prenom")] + "\t\t\t" + myDataRow[("note")] + "\r\n";
+            }
+            
+            return result;
+        }
+
     }
 }
