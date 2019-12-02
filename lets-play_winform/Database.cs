@@ -415,5 +415,85 @@ namespace lets_play_winform
             }
         }
 
+        public void DeleteDatabaseDataSet()
+        {
+            // old
+/*            string connectionString = "SERVER=" + this.addrIPDB + ";DATABASE=" + this.name + ";UID=" + this.usernameDB + ";PASSWORD=" + this.passwordDB + "";
+            MySqlConnection connection = new MySqlConnection(connectionString);
+
+            connection.Open();
+            MySqlCommand cmd = connection.CreateCommand();
+            cmd.CommandText = "DELETE FROM scores";
+            cmd.ExecuteNonQuery(); // Execute the request
+            connection.Close();*/
+
+            // new
+
+            string connectionString = "SERVER=127.0.0.1;DATABASE=orthogenie;UID=root;PASSWORD=";
+
+            MySqlDataAdapter daDelete = new MySqlDataAdapter();
+            MySqlConnection connection = new MySqlConnection(connectionString);
+
+            DataTable dtDelete = new DataTable("scores");
+
+            dtDelete.Columns.Add("prenom", typeof(string));
+            dtDelete.Columns.Add("note", typeof(int));
+
+            DataSet dsDelete = new DataSet();
+            dsDelete.Tables.Add(dtDelete);
+
+ /*           DataRow drDelete = dtDelete.NewRow();
+            dtDelete.Rows.Add(drDelete);
+            drDelete.AcceptChanges();
+            drDelete.SetModified();*/
+
+            MySqlCommand cmd = new MySqlCommand("DELETE FROM scores", connection);
+
+            daDelete.DeleteCommand = cmd;
+
+            daDelete.Update(dtDelete);
+
+        }
+
+        public void UpdateOneElementDatabaseDataSet(string prenom, int score)
+        {
+            string connectionString = "SERVER=127.0.0.1;DATABASE=orthogenie;UID=root;PASSWORD=";
+            MySqlConnection connection = new MySqlConnection(connectionString);
+            string requestSelect = "SELECT note from scores WHERE prenom =@prenom";                       // Preparation de la requete
+            MySqlCommand cmdSelect = new MySqlCommand(requestSelect, connection);                          // Creation d'un objet MySqlCommand qui ...
+
+            MySqlDataAdapter daUpdateOneElement = new MySqlDataAdapter();
+
+            DataSet dsUpdateOneElement = new DataSet();
+
+            cmdSelect.Parameters.Add("@prenom", prenom);
+
+            daUpdateOneElement.SelectCommand = cmdSelect;
+
+            daUpdateOneElement.Fill(dsUpdateOneElement, "scores");
+
+            // Preparation des commandes d'Update en SQL
+            daUpdateOneElement.UpdateCommand = new MySqlCommand("UPDATE scores SET prenom=@prenom,note=@note WHERE prenom=@prenom", connection);
+            daUpdateOneElement.UpdateCommand.Parameters.Add("@prenom", prenom);
+            daUpdateOneElement.UpdateCommand.Parameters.Add("@note", score);
+
+            // Je definis comment est ma table
+            DataTable dtUpdateOneElement = new DataTable("scores");
+            dtUpdateOneElement.Columns.Add("prenom", typeof(string));
+            dtUpdateOneElement.Columns.Add("note", typeof(int));
+
+            // Je definis mon Data Set en precisant que j'utilise la table dans dtUpdate
+            DataSet dsUpdate = new DataSet();
+            dsUpdate.Tables.Add(dtUpdateOneElement);
+
+            // Je precise les lignes à utilisers et ce que je veux mettre ajour
+            DataRow drUpdate = dtUpdateOneElement.NewRow();       // Init Data Row
+            dtUpdateOneElement.Rows.Add(drUpdate);                // Ajout de ma mise a jour
+            drUpdate.AcceptChanges();
+            drUpdate.SetModified();
+
+            daUpdateOneElement.Update(dtUpdateOneElement);
+        }
+
     }
 }
