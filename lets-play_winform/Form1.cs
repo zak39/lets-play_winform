@@ -22,6 +22,8 @@ namespace lets_play_winform
         public Revision mode_revision;   // J'ai eu l'idée mais c'est Arthur qui m'a indique de declarer mon constructeur d'objet de cette facon
         public Database orthoDb = new Database("127.0.0.1","root","","orthogenie");
         //public MySqlConnection connection;
+        public DatabaseDataSet orthoDbDs = new DatabaseDataSet();
+
 
         public Form1()
         {
@@ -126,7 +128,10 @@ namespace lets_play_winform
             string prenom = textBox4.Text;
             int score = monjeu.points;
             //Form2.classer.classement.Add(mode_revision);
-            orthoDb.SaveDatabase(prenom, score);
+
+            // orthoDb.SaveDatabase(prenom, score); // without Data Set
+            orthoDbDs.SaveDatabaseDataSet(prenom, score); // with Data Set
+            
             //Form2.classer.Save(prenom, score);
             this.Hide();
             Form2 window = new Form2();
@@ -143,5 +148,6 @@ namespace lets_play_winform
         {
 
         }
+
     }
 }
