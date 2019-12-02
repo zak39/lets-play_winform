@@ -272,11 +272,12 @@ namespace lets_play_winform
             MySqlConnection connection = new MySqlConnection(connectionString);
 
             string requestSelect = "SELECT * FROM scores ORDER BY note DESC";                       // Preparation de la requete
-            MySqlDataAdapter daScores = new MySqlDataAdapter(requestSelect, connectionString);      // Creation de l'objet Data Adapter (DA) est l'interface entre la base de donnees et le data set. Le DA
-                                                                                                    // est responsable de la gestion des connexions a la database (?)
-          
-            MySqlCommandBuilder commandBuilder = new MySqlCommandBuilder(daScores);                 // Creation de l'objet Command Builder qui permet d'executer des commandes sql (?)
+            MySqlCommand cmd = new MySqlCommand(requestSelect,connection);                          // Creation d'un objet MySqlCommand qui ...
 
+            MySqlDataAdapter daScores = new MySqlDataAdapter();                                     // Creation de l'objet Data Adapter (DA) est l'interface entre la base de donnees et le data set. Le DA
+            
+            daScores.SelectCommand = cmd;                                                           // Permet d'executer le code SQL pour le Select seulement
+          
             DataSet dsScores = new DataSet();                                                       // Creation de l'objet data set qui definit dans une zone memoire dans laquelle les donnees
                                                                                                     // peuvent etre lues ou modifier. Il est possible de stocker plusieurs tables (?)
 
@@ -289,8 +290,129 @@ namespace lets_play_winform
             {
                 result += myDataRow[("prenom")] + "\t\t\t" + myDataRow[("note")] + "\r\n";
             }
-            
+
             return result;
+        }
+
+        public void SaveDatabaseDataSet(string prenom, int note)
+        {
+            string prenomInDB = "";
+
+            //string connectionString = "SERVER=" + this.addrIPDB + ";DATABASE=" + this.name + ";UID=" + this.usernameDB + ";PASSWORD=" + this.passwordDB + "";
+            //MySqlConnection connection = new MySqlConnection(connectionString);
+
+            //connection.Open()C
+            string connectionString = "SERVER=127.0.0.1;DATABASE=orthogenie;UID=root;PASSWORD=";
+            MySqlConnection connection = new MySqlConnection(connectionString);
+
+            string requestSelect = "SELECT prenom from scores WHERE prenom =@prenom";                       // Preparation de la requete
+
+            MySqlCommand cmd = new MySqlCommand(requestSelect, connection);                          // Creation d'un objet MySqlCommand qui ...
+            
+            cmd.Parameters.Add("@prenom", prenom);
+            
+            MySqlDataAdapter daScores = new MySqlDataAdapter();                                     // Creation de l'objet Data Adapter (DA) est l'interface entre la base de donnees et le data set. Le DA
+
+            daScores.SelectCommand = cmd;
+
+            DataSet dsScores = new DataSet();
+
+            daScores.Fill(dsScores, "Scores");
+
+            DataTable myDataTable = dsScores.Tables["scores"];
+            
+            foreach (DataRow myDataRow in myDataTable.Rows) // doit remplacer la boucle while (reader.Readd())
+            {
+                prenomInDB += myDataRow[("prenom")];
+            }
+
+            
+            string number = "", word = "";
+            if(prenomInDB == "")
+            {
+                // Technique 1 - marche
+           /*     MySqlDataAdapter daInsert = new MySqlDataAdapter();
+
+                DataSet dsInsert = new DataSet();                                                       // Creation de l'objet data set qui definit dans une zone memoire dans laquelle les donnees
+
+
+                daInsert.InsertCommand = new MySqlCommand("INSERT INTO scores(prenom,note) VALUES (@prenom, @note)",connection);
+                daInsert.InsertCommand.Parameters.Add("@prenom", prenom);
+                daInsert.InsertCommand.Parameters.Add("@note", note);
+                
+                connection.Open();
+                daInsert.InsertCommand.ExecuteNonQuery(); // la connection doit etre ouverte et ferme mais on ne veut pas de ca
+                connection.Close();
+                number = note.ToString();
+                word = prenom + " " + number;*/
+
+                // technique 1Bis
+
+                MySqlDataAdapter daInsert = new MySqlDataAdapter();
+
+                DataSet dsInsert = new DataSet();                                                       // Creation de l'objet data set qui definit dans une zone memoire dans laquelle les donnees
+
+                DataTable dtInsert = dsInsert.Tables.Add("scores");         // Init Data Table
+
+                dtInsert.Columns.Add("prenom",typeof(string));
+                dtInsert.Columns.Add("note",typeof(int));
+                dtInsert.Rows.Add(prenom, note);
+
+                daInsert.InsertCommand = new MySqlCommand("INSERT INTO scores(prenom,note) VALUES (@prenom, @note)", connection);
+                daInsert.InsertCommand.Parameters.Add("@prenom", prenom);
+                daInsert.InsertCommand.Parameters.Add("@note", note);
+
+                daInsert.Update(dtInsert);
+
+            }
+            else
+            {
+                string requestSelect02 = "SELECT note from scores WHERE prenom =@prenom";                       // Preparation de la requete
+                int noteCurrently = 0;
+                //string number = "";
+                MySqlCommand cmdSelect = new MySqlCommand(requestSelect02, connection);                          // Creation d'un objet MySqlCommand qui ...
+
+                MySqlDataAdapter daUpdate = new MySqlDataAdapter();
+
+                cmdSelect.Parameters.Add("@prenom", prenom);
+
+                daUpdate.SelectCommand = cmdSelect;
+
+                daUpdate.Fill(dsScores, "scores");
+                
+                DataTable myDataTable02 = dsScores.Tables["scores"];
+
+                foreach( DataRow myDataRow02 in myDataTable02.Rows )
+                {
+                    number += myDataRow02[("note")];
+                }
+                
+                noteCurrently = Convert.ToInt32(number);
+                int newNote = noteCurrently + note; // mise a jour du score du jour
+
+                // Preparation des commandes d'Update en SQL
+                daUpdate.UpdateCommand = new MySqlCommand("UPDATE scores SET prenom=@prenom,note=@note WHERE prenom=@prenom",connection);
+                daUpdate.UpdateCommand.Parameters.Add("@prenom", prenom);
+                daUpdate.UpdateCommand.Parameters.Add("@note", newNote);
+
+                // Je definis comment est ma table
+                DataTable dtUpdate = new DataTable("scores");
+                dtUpdate.Columns.Add("prenom", typeof(string));
+                dtUpdate.Columns.Add("note", typeof(int));
+
+                // Je definis mon Data Set en precisant que j'utilise la table dans dtUpdate
+                DataSet dsUpdate = new DataSet();
+                dsUpdate.Tables.Add(dtUpdate);
+
+                // Je precise les lignes à utilisers et ce que je veux mettre ajour
+                DataRow drUpdate = dtUpdate.NewRow();       // Init Data Row
+                dtUpdate.Rows.Add(drUpdate);                // Ajout de ma mise a jour
+                drUpdate.AcceptChanges();                   
+                drUpdate.SetModified();
+
+                daUpdate.Update(dtUpdate);
+
+            }
         }
 
     }
