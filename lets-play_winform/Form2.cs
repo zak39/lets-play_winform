@@ -96,7 +96,8 @@ namespace lets_play_winform
 
         private void button1_Click(object sender, EventArgs e)
         {
-            orthoDb.ChargeDatabase();
+            //orthoDb.ChargeDatabase(); // without dataset
+            orthoDbDs.ChargeDatabaseDataSet(); // with dataset
             textBox2.Clear();
             textBox2.AppendText("Prenom\t\t\tScore" + "\r\n");
             textBox2.AppendText(orthoDb.AfficherDatabase());
@@ -105,7 +106,8 @@ namespace lets_play_winform
 
         private void button2_Click(object sender, EventArgs e)
         {
-            orthoDb.DeleteAllDatabase();
+            // orthoDb.DeleteAllDatabase(); // without Data Set
+            orthoDbDs.DeleteDatabaseDataSet(); // With Data Set
             textBox2.Clear();
             textBox2.AppendText("Prenom\t\t\tScore" + "\r\n");
             textBox2.AppendText(orthoDb.AfficherDatabase());
