@@ -294,6 +294,42 @@ namespace lets_play_winform
             return result;
         }
 
+        public void ChargeDatabaseDataSet(string pathRelative = "C:\\Users\\hela\\Documents\\code\\csharp\\lets-play_winform-with-git\\lets-play_winform\\lets-play_winform\\file.txt")
+        {
+
+            using (var reader = new StreamReader(@pathRelative)) // https://stackoverflow.com/questions/5282999/reading-csv-file-and-storing-values-into-an-array
+            {
+                List<string> listPernom = new List<string>();
+                List<string> listSolution = new List<string>();
+                List<string> listMot = new List<string>();
+                List<int> listScore = new List<int>();
+
+                while (!reader.EndOfStream)
+                {
+                    var line = reader.ReadLine();
+                    var values = line.Split(';');
+
+                    listPernom.Add(values[0]);
+                    listSolution.Add(values[1]);
+                    listMot.Add(values[2]);
+                    listScore.Add(int.Parse(values[3]));
+                }
+
+                int lenPrenom = listPernom.Count;
+                int lenSolution = listSolution.Count;
+                int lenMot = listMot.Count;
+                int lenScore = listScore.Count;
+
+                if (lenSolution == lenMot)
+                {
+                    for (int i = 0; i <= lenMot - 1; i++)
+                    {
+                        SaveDatabaseDataSet(listPernom[i], listScore[i]);
+                    }
+                }
+            }
+        }
+
         public void SaveDatabaseDataSet(string prenom, int note)
         {
             string prenomInDB = "";
@@ -436,22 +472,41 @@ namespace lets_play_winform
 
             DataTable dtDelete = new DataTable("scores");
 
-            dtDelete.Columns.Add("prenom", typeof(string));
-            dtDelete.Columns.Add("note", typeof(int));
+            //dtDelete.Columns.Add("prenom", typeof(string));
+            //dtDelete.Columns.Add("note", typeof(int));
+
 
             DataSet dsDelete = new DataSet();
             dsDelete.Tables.Add(dtDelete);
 
- /*           DataRow drDelete = dtDelete.NewRow();
-            dtDelete.Rows.Add(drDelete);
-            drDelete.AcceptChanges();
-            drDelete.SetModified();*/
+            //DataRow drDelete = dtDelete.NewRow();
+            //DataRow drDelete = dsDelete.Tables["scores"].Rows.Count;
+            //int nbRow = dsDelete.Tables["scores"].Rows.Count;
+            //drDelete.Delete();
+            //DataRow drDelete = dsDelete.Tables[0].Rows[0];
+            //dtDelete.Rows.Add(drDelete);
+            //dtDelete.Rows.Add(drDelete);
+            //dtDelete.RowDeleted;
+            //drDelete.AcceptChanges();
+            //drDelete.SetModified();
+
+       /*     for (int i = 0; i <= nbRow -1; i++ )
+            {
+                DataRow drDeleteCurrent = dsDelete.Tables["scores"].Rows[i];
+                drDeleteCurrent.Delete();
+                drDeleteCurrent.AcceptChanges();
+            }*/
+
+            //dsDelete.Tables["scores"].AcceptChanges();
+
+            //drDelete.Delete();
 
             MySqlCommand cmd = new MySqlCommand("DELETE FROM scores", connection);
 
             daDelete.DeleteCommand = cmd;
 
-            daDelete.Update(dtDelete);
+            //daDelete.Update(dsDelete.Tables["scores"]);
+            daDelete.DeleteCommand.UpdatedRowSource = UpdateRowSource.None;
 
         }
 
